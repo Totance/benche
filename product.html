@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品 | 本澈</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #F7F5F0;
+            --color-text: #3D3A35;
+            --color-text-light: #7A756B;
+            --color-accent: #A89580;
+            --color-accent-light: #C4B8A8;
+            --font-serif: 'Noto Serif SC', serif;
+            --font-sans: 'Noto Sans SC', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--color-bg) 0%, transparent 100%);
+            opacity: 0;
+            animation: fadeIn 1200ms ease-out forwards;
+            animation-delay: 200ms;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            color: var(--color-text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: color 0.4s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-accent);
+            transition: width 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .page-header {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse 60% 40% at 40% 50%, rgba(196, 184, 168, 0.2) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 30%, rgba(168, 149, 128, 0.15) 0%, transparent 30%);
+            animation: breathingLight 8000ms ease-in-out infinite;
+        }
+
+        @keyframes breathingLight {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .page-header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInUp 1200ms ease-out forwards;
+            animation-delay: 600ms;
+        }
+
+        .page-header p {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            letter-spacing: 0.2em;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInUp 1200ms ease-out forwards;
+            animation-delay: 800ms;
+        }
+
+        .intro {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 5rem 4rem;
+            text-align: center;
+        }
+
+        .intro p {
+            font-size: 1rem;
+            color: var(--color-text-light);
+            line-height: 2.4;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .intro p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .products {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .product-card {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid var(--color-accent-light);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1200ms ease, transform 1200ms ease, border-color 0.4s ease;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:hover {
+            border-color: var(--color-accent);
+        }
+
+        .product-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(168, 149, 128, 0.3) 0%, transparent 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-icon-inner {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-accent) 100%);
+            opacity: 0.6;
+        }
+
+        .product-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: 0.15em;
+        }
+
+        .product-card .description {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            line-height: 2;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card .note {
+            font-size: 0.75rem;
+            color: var(--color-accent);
+            letter-spacing: 0.1em;
+        }
+
+        .philosophy {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 6rem 4rem;
+            text-align: center;
+        }
+
+        .philosophy-block {
+            padding: 3rem;
+            border-left: 2px solid var(--color-accent-light);
+            text-align: left;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .philosophy-block.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .philosophy-block p {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            line-height: 2.4;
+            margin-bottom: 1rem;
+        }
+
+        .philosophy-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .coming-soon {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 4rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .coming-soon.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .coming-soon h3 {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: 0.15em;
+        }
+
+        .coming-soon p {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            line-height: 2;
+        }
+
+        footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--color-accent-light);
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+            
+            .nav-links {
+                gap: 1.2rem;
+            }
+
+            .nav-links a {
+                font-size: 0.75rem;
+            }
+
+            .intro, .products, .philosophy, .coming-soon {
+                padding: 4rem 2rem;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">本澈</a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="about.html">关于</a></li>
+            <li><a href="story.html">故事</a></li>
+            <li><a href="experience.html">体验</a></li>
+            <li><a href="product.html">产品</a></li>
+            <li><a href="contact.html">联系</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1>产品</h1>
+        <p>一期一会</p>
+    </header>
+
+    <div class="intro">
+        <p>我们不追求多，只求精。</p>
+        <p>每一款茶，都经过反复挑选。</p>
+        <p>不是为了卖，而是为了让你能安静五分钟。</p>
+    </div>
+
+    <div class="products">
+        <div class="product-card">
+            <div class="product-icon">
+                <div class="product-icon-inner"></div>
+            </div>
+            <h3>月光白</h3>
+            <p class="description">云南古树白茶<br>清甜淡雅，回甘悠长</p>
+            <p class="note">即将上线</p>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">
+                <div class="product-icon-inner"></div>
+            </div>
+            <h3>兰香乌龙</h3>
+            <p class="description">高山乌龙<br>兰花香，细腻绵长</p>
+            <p class="note">即将上线</p>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">
+                <div class="product-icon-inner"></div>
+            </div>
+            <h3>陈皮普洱</h3>
+            <p class="description">熟茶配陈皮<br>醇厚温润，暖胃养身</p>
+            <p class="note">即将上线</p>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">
+                <div class="product-icon-inner"></div>
+            </div>
+            <h3>荒野红茶</h3>
+            <p class="description">野生茶树<br>蜜香甘醇，齿颊留香</p>
+            <p class="note">即将上线</p>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">
+                <div class="product-icon-inner"></div>
+            </div>
+            <h3>桂花龙井</h3>
+            <p class="description">明前龙井配桂花<br>鲜爽回甜，香气清幽</p>
+            <p class="note">即将上线</p>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">
+                <div class="product-icon-inner"></div>
+            </div>
+            <h3>冷萃茶包</h3>
+            <p class="description">冷泡专用<br>随时随地，简单方便</p>
+            <p class="note">即将上线</p>
+        </div>
+    </div>
+
+    <div class="philosophy">
+        <div class="philosophy-block">
+            <p>本澈的产品理念：</p>
+            <p>不追产区，不追年份，只追口感。</p>
+            <p>好茶的标准只有一个：让你想安静下来。</p>
+            <br>
+            <p>目前产品正在筹备中，</p>
+            <p>即将上线，敬请期待。</p>
+            <br>
+            <p>也欢迎你留言告诉我们，</p>
+            <p>你最喜欢什么口味的茶。</p>
+        </div>
+    </div>
+
+    <div class="coming-soon">
+        <h3>更多产品 · 敬请期待</h3>
+        <p>我们正在寻找最好的茶叶，<br>也正在设计最安静的包装。</p>
+        <p>不急，慢慢来。</p>
+    </div>
+
+    <footer>
+        <p>© 2026 本澈 Benchè · 一期一会</p>
+    </footer>
+
+    <script>
+        const elements = document.querySelectorAll('.intro p, .product-card, .philosophy-block, .coming-soon');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        elements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
