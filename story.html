@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>故事 | 本澈</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #F7F5F0;
+            --color-text: #3D3A35;
+            --color-text-light: #7A756B;
+            --color-accent: #A89580;
+            --color-accent-light: #C4B8A8;
+            --font-serif: 'Noto Serif SC', serif;
+            --font-sans: 'Noto Sans SC', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--color-bg) 0%, transparent 100%);
+            opacity: 0;
+            animation: fadeIn 1200ms ease-out forwards;
+            animation-delay: 200ms;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            color: var(--color-text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: color 0.4s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-accent);
+            transition: width 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .page-header {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse 70% 50% at 30% 40%, rgba(168, 149, 128, 0.2) 0%, transparent 60%),
+                        radial-gradient(ellipse 50% 40% at 70% 60%, rgba(196, 184, 168, 0.15) 0%, transparent 50%);
+            animation: breathingLight 8000ms ease-in-out infinite;
+        }
+
+        @keyframes breathingLight {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .page-header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInUp 1200ms ease-out forwards;
+            animation-delay: 600ms;
+        }
+
+        .page-header p {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            letter-spacing: 0.2em;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInUp 1200ms ease-out forwards;
+            animation-delay: 800ms;
+        }
+
+        .timeline {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 6rem 4rem;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 100%;
+            background: var(--color-accent-light);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            padding-right: 3rem;
+            padding-left: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-left: 3rem;
+        }
+
+        .timeline-year {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            font-weight: 300;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        .timeline-text {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            line-height: 2;
+        }
+
+        .chapter {
+            padding: 6rem 4rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .chapter-block {
+            margin-bottom: 5rem;
+            padding: 3rem;
+            border-left: 2px solid var(--color-accent-light);
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .chapter-block.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .chapter-block h2 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.15em;
+        }
+
+        .chapter-block p {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            line-height: 2.4;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-block .quote {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--color-text);
+            font-style: italic;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--color-accent-light);
+        }
+
+        footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--color-accent-light);
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+            
+            .nav-links {
+                gap: 1.2rem;
+            }
+
+            .nav-links a {
+                font-size: 0.75rem;
+            }
+
+            .timeline {
+                padding: 4rem 2rem;
+            }
+
+            .timeline::before {
+                left: 1rem;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(odd) {
+                flex-direction: column;
+                text-align: left;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-content {
+                padding-left: 2.5rem;
+                padding-right: 0;
+            }
+
+            .chapter {
+                padding: 4rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">本澈</a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="about.html">关于</a></li>
+            <li><a href="story.html">故事</a></li>
+            <li><a href="experience.html">体验</a></li>
+            <li><a href="product.html">产品</a></li>
+            <li><a href="contact.html">联系</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1>故事</h1>
+        <p>一期一会</p>
+    </header>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-title">开始</div>
+                <p class="timeline-text">一个普通的下午，<br>一杯茶的工夫，<br>想明白了一些事。</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">2022</div>
+                <div class="timeline-title">出发</div>
+                <p class="timeline-text">走访茶山，<br>与茶农闲聊，<br>发现好茶很简单。</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">2024</div>
+                <div class="timeline-title">本澈</div>
+                <p class="timeline-text">创立本澈，<br>只想做一件事：<br>让你能安静五分钟。</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <div class="timeline-year">2026</div>
+                <div class="timeline-title">现在</div>
+                <p class="timeline-text">我们还在路上，<br>也欢迎你随时加入，<br>喝一杯。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="chapter">
+        <div class="chapter-block">
+            <h2>一杯茶的功夫</h2>
+            <p>2020年的那个下午，我像往常一样忙碌。手机响个不停，邮件看不完，焦虑像背景音乐一样持续。</p>
+            <p>但当我坐下来，给自己泡了一杯茶。</p>
+            <p>五分钟里，什么都没发生。没有电话，没有邮件，没有必须马上处理的事。只有茶香、水气、和自己的呼吸。</p>
+            <p class="quote">那五分钟，像是偷来的。</p>
+        </div>
+
+        <div class="chapter-block">
+            <h2>茶是什么</h2>
+            <p>后来我开始研究茶，才发现中国茶文化那么深。</p>
+            <p>日本有"茶道"，强调"一期一会"——每一次相遇都是唯一。<br>中国讲"茶禅一味"，茶和禅都关于专注当下。</p>
+            <p>但这些都太远了。远到像一个仪式，一个表演。</p>
+            <p>我们想做的很简单：一杯茶，安静的，不打扰的五分钟。</p>
+            <p>不需要懂茶，不需要仪式，不需要特意做什么。<br>只是停下来，喝一杯。</p>
+        </div>
+
+        <div class="chapter-block">
+            <h2>为什么是本澈</h2>
+            <p>本澈这个名字，想了很久。</p>
+            <p>本，是本来，是初心。</p>
+            <p>澈，是清澈，是通透。</p>
+            <p>我们希望每一个喝本澈的人，都能在这杯茶里，<br>找到一点本来清澈的东西。</p>
+            <p>不需要多，哪怕只是五分钟。</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 本澈 Benchè · 一期一会</p>
+    </footer>
+
+    <script>
+        const items = document.querySelectorAll('.timeline-item, .chapter-block');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        items.forEach(item => observer.observe(item));
+    </script>
+</body>
+</html>
