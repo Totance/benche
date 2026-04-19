@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系 | 本澈</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #F7F5F0;
+            --color-text: #3D3A35;
+            --color-text-light: #7A756B;
+            --color-accent: #A89580;
+            --color-accent-light: #C4B8A8;
+            --font-serif: 'Noto Serif SC', serif;
+            --font-sans: 'Noto Sans SC', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--color-bg) 0%, transparent 100%);
+            opacity: 0;
+            animation: fadeIn 1200ms ease-out forwards;
+            animation-delay: 200ms;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            color: var(--color-text);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: color 0.4s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--color-accent);
+            transition: width 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-text);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .page-header {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse 50% 40% at 60% 40%, rgba(196, 184, 168, 0.2) 0%, transparent 55%);
+            animation: breathingLight 8000ms ease-in-out infinite;
+        }
+
+        @keyframes breathingLight {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .page-header h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInUp 1200ms ease-out forwards;
+            animation-delay: 600ms;
+        }
+
+        .page-header p {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            letter-spacing: 0.2em;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeInUp 1200ms ease-out forwards;
+            animation-delay: 800ms;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 6rem 4rem;
+        }
+
+        .message {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .message.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message p {
+            font-size: 1rem;
+            color: var(--color-text-light);
+            line-height: 2.4;
+            margin-bottom: 1.5rem;
+        }
+
+        .message p:last-child {
+            margin-bottom: 0;
+        }
+
+        .contact-methods {
+            margin-top: 4rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--color-accent-light);
+        }
+
+        .contact-block {
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .contact-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .contact-block h3 {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: 0.15em;
+            color: var(--color-text);
+        }
+
+        .contact-block p {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            line-height: 2;
+        }
+
+        .contact-block a {
+            color: var(--color-text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-block a:hover {
+            color: var(--color-accent);
+        }
+
+        .invitation {
+            text-align: center;
+            padding: 4rem;
+            margin-top: 4rem;
+            border: 1px solid var(--color-accent-light);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1200ms ease, transform 1200ms ease;
+        }
+
+        .invitation.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .invitation h2 {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 2rem;
+        }
+
+        .invitation p {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            line-height: 2.4;
+        }
+
+        footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--color-accent-light);
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--color-text-light);
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+            
+            .nav-links {
+                gap: 1.2rem;
+            }
+
+            .nav-links a {
+                font-size: 0.75rem;
+            }
+
+            .content {
+                padding: 4rem 2rem;
+            }
+
+            .invitation {
+                padding: 3rem 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">本澈</a>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="about.html">关于</a></li>
+            <li><a href="story.html">故事</a></li>
+            <li><a href="experience.html">体验</a></li>
+            <li><a href="product.html">产品</a></li>
+            <li><a href="contact.html">联系</a></li>
+        </ul>
+    </nav>
+
+    <header class="page-header">
+        <h1>联系</h1>
+        <p>一期一会</p>
+    </header>
+
+    <div class="content">
+        <div class="message">
+            <p>如果你有任何想说的，</p>
+            <p>欢迎随时联系我们。</p>
+            <br>
+            <p>可以是：</p>
+            <p>—— 对产品的建议</p>
+            <p>—— 想聊聊茶</p>
+            <p>—— 单纯想打个招呼</p>
+            <br>
+            <p>我们都会认真阅读。</p>
+            <p>但不保证立刻回复。</p>
+            <p>毕意，我们也需要安静的时间。</p>
+        </div>
+
+        <div class="contact-methods">
+            <div class="contact-block">
+                <h3>邮件</h3>
+                <p>hello@benche.cn</p>
+            </div>
+
+            <div class="contact-block">
+                <h3>微信</h3>
+                <p>搜索「本澈」</p>
+            </div>
+
+            <div class="contact-block">
+                <h3>小红书</h3>
+                <p>@本澈Benchè</p>
+            </div>
+        </div>
+
+        <div class="invitation">
+            <h2>邀请</h2>
+            <p>如果你正好有空，</p>
+            <p>不妨坐下来，泡一杯茶。</p>
+            <br>
+            <p>不需要联系我们，</p>
+            <p>只需要给自己五分钟。</p>
+            <br>
+            <p>这，就是我们想做的事。</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 本澈 Benchè · 一期一会</p>
+    </footer>
+
+    <script>
+        const elements = document.querySelectorAll('.message, .contact-block, .invitation');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        elements.forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
